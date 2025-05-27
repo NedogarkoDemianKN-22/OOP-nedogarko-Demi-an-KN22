@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// -------------------- Абстракції телефонів і планшетів --------------------
+// Абстракції телефонів і планшетів
 class Phone {
 public:
     virtual void showPrice() const = 0;
@@ -70,7 +70,7 @@ public:
     }
 };
 
-// -------------------- Composite Pattern --------------------
+// Composite Pattern 
 
 class ProductComponent {
 public:
@@ -114,7 +114,7 @@ public:
     }
 };
 
-// -------------------- Facade Pattern --------------------
+//  Facade Pattern
 
 class ShopFacade {
 public:
@@ -148,7 +148,7 @@ public:
     }
 };
 
-// -------------------- Головна функція --------------------
+// Меню програми
 
 int main() {
     ShopFacade shop;
