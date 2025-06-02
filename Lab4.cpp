@@ -9,25 +9,52 @@ using namespace std;
 class Phone {
 public:
     virtual void showPrice() const = 0;
+    virtual void showInfo() const = 0;
     virtual shared_ptr<Phone> clone() const = 0;
     virtual ~Phone() = default;
 };
 
 class Nokia : public Phone {
+private:
+    string brand;
+    string model;
+    string description;
+
 public:
+    Nokia() : brand("Nokia"), model("3310"), description("Легендарна живуча модель як вражає і  сьогодні своєю довговічнісьтю.") {}
+
     void showPrice() const override {
-        cout << "Ціна  Nokia 3310: $12.99" << endl;
+        cout << "Ціна Nokia 3310: $12.99" << endl;
     }
+
+    void showInfo() const override {
+        cout << "Бренд: " << brand << "\n Модель: " << model << "\n Опис: " << description << endl;
+        showPrice();
+    }
+
     shared_ptr<Phone> clone() const override {
         return make_shared<Nokia>(*this);
     }
 };
 
 class Iphone : public Phone {
+private:
+    string brand;
+    string model;
+    string description;
+
 public:
+    Iphone() : brand("Apple"), model("iPhone XR"), description("Смартфон із якісною камерою, пердовим дизайном та iOS.") {}
+
     void showPrice() const override {
-        cout << "Ціна  Iphone Xr : $299.99" << endl;
+        cout << "Ціна iPhone XR: $299.99" << endl;
     }
+
+    void showInfo() const override {
+        cout << "Бренд: " << brand << "\n Модель: " << model << "\n Опис: " << description << endl;
+        showPrice();
+    }
+
     shared_ptr<Phone> clone() const override {
         return make_shared<Iphone>(*this);
     }
@@ -36,42 +63,86 @@ public:
 class Tablet {
 public:
     virtual void showPrice() const = 0;
+    virtual void showInfo() const = 0;
     virtual shared_ptr<Tablet> clone() const = 0;
     virtual ~Tablet() = default;
 };
 
 class AppleTablet : public Tablet {
+private:
+    string brand;
+    string model;
+    string description;
+
 public:
+    AppleTablet() : brand("Apple"), model("iPad"), description("Планшет для роботи, навчання та розваг.") {}
+
     void showPrice() const override {
-        cout << "Ціна Apple iPad : $599.99" << endl;
+        cout << "Ціна Apple iPad: $599.99" << endl;
     }
+
+    void showInfo() const override {
+        cout << "Бренд: " << brand << "\n Модель: " << model << "\n Опис: " << description << endl;
+        showPrice();
+    }
+
     shared_ptr<Tablet> clone() const override {
         return make_shared<AppleTablet>(*this);
     }
 };
 
 class GoogleTablet : public Tablet {
+private:
+    string brand;
+    string model;
+    string description;
+
 public:
+    GoogleTablet() : brand("Google"), model("Pixel 5s"), description("Планшет на Chrome OS , ну не знаю шо ше написати , бажаю удачі власнику.") {}
+
     void showPrice() const override {
-        cout << "Ціна Googletablet : $899.99" << endl;
+        cout << "Ціна Google Pixel 5s: $899.99" << endl;
     }
+
+    void showInfo() const override {
+        cout << "Бренд: " << brand << "\nМодель: " << model << "\nОпис: " << description << endl;
+        showPrice();
+    }
+
     shared_ptr<Tablet> clone() const override {
         return make_shared<GoogleTablet>(*this);
     }
 };
 
 class SamsungTablet : public Tablet {
+private:
+    string brand;
+    string model;
+    string description;
+
 public:
+    SamsungTablet() : brand("Samsung"), model("Galaxy Tab"), description("Планшет на Android з великим дисплеєм , якщо ваам байдуже на свою дитину \n то рекомендую купити для дитини , великий екран на довго затяне вашу дитину \n як то кажуть чим би дитина не бавилась аби не плакала.") {}
+
     void showPrice() const override {
-        cout << "Ціна Samsung Galaxy Tab : $299.99" << endl;
+        cout << "Ціна Samsung Galaxy Tab: $299.99" << endl;
     }
+
+    void showInfo() const override {
+        cout << "Бренд: " << brand << "\nМодель: " << model << "\nОпис: " << description << endl;
+        showPrice();
+    }
+
     shared_ptr<Tablet> clone() const override {
         return make_shared<SamsungTablet>(*this);
     }
 };
 
-// Composite Pattern 
 
+
+
+
+
+// Composite Pattern
 class ProductComponent {
 public:
     virtual void show() const = 0;
@@ -83,7 +154,7 @@ class PhoneProduct : public ProductComponent {
 public:
     PhoneProduct(shared_ptr<Phone> p) : phone(p) {}
     void show() const override {
-        phone->showPrice();
+        phone->showInfo();
     }
 };
 
@@ -92,7 +163,7 @@ class TabletProduct : public ProductComponent {
 public:
     TabletProduct(shared_ptr<Tablet> t) : tablet(t) {}
     void show() const override {
-        tablet->showPrice();
+        tablet->showInfo();
     }
 };
 
@@ -107,15 +178,17 @@ public:
     }
 
     void show() const override {
-        cout << "--- Категорія: " << name << " ---" << endl;
+        cout << "\n--- Категорія: " << name << " ---" << endl;
         for (const auto& child : children) {
             child->show();
+            cout << endl;
         }
     }
 };
 
-//  Facade Pattern
 
+
+// Facade Pattern
 class ShopFacade {
 public:
     void showPhonesAndClones() {
@@ -127,14 +200,18 @@ public:
         phoneCategory->add(make_shared<PhoneProduct>(iphone));
         phoneCategory->add(make_shared<PhoneProduct>(nokia));
 
-        cout << "Оригінали:" << endl;
+        cout << "\n Оригінали:" << endl;
         phoneCategory->show();
 
-        cout << "Клони:" << endl;
+        cout << "\n Клон iPhone XR:" << endl;
         auto clonedIphone = iphone->clone();
+        clonedIphone->showInfo();
+
+          cout << "\n Клон Nokia 3310:" << endl;
         auto clonedNokia = nokia->clone();
-        clonedIphone->showPrice();
-        clonedNokia->showPrice();
+        clonedNokia->showInfo();
+
+
     }
 
     void showTablets() {
@@ -148,25 +225,18 @@ public:
     }
 };
 
-// Меню програми
-
+// головне меню програми
 int main() {
     ShopFacade shop;
     int c;
 
     for (int i = 0; i < 4; i++) {
-           
-        cout << "" << endl;
-        cout << "" << endl;
-        cout << "Привіт тебе вітає магазин смартфонів та планшетів" << endl;
-        cout << "" << endl;
-        cout << "Меню:" << endl;
-        cout << "" << endl;
-        cout << "Щоб глянути ціна на смартфони введіть 1" << endl;
-        cout << "Щоб глянути ціна на планшети введіть 2" << endl;
-        cout << "" << endl;
-        cout << "Введіть число" << endl;
-        cin >> c ;
+        cout << "\n  Привіт! вас  вітає магазин смартфонів та планшетів" << endl;
+        cout << "Меню:\n" << endl;
+        cout << "1 - Подивитися ціни на смартфони" << endl;
+        cout << "2 - Подивитися ціни на планшети" << endl;
+        cout << "\n Ваш вибір: ";
+        cin >> c;
 
         switch (c) {
         case 1:
@@ -179,4 +249,7 @@ int main() {
             cout << "Невірне значення.\n";
         }
     }
+
+    return 0;
 }
+
